@@ -14,7 +14,7 @@ var adapter = bluetooth.DefaultAdapter
 var upgrader = websocket.Upgrader{}
 var subscribers = make(map[*websocket.Conn]*Subscriber)
 var wg = sync.WaitGroup{}
-var homeTemplate = template.Must(template.New("template.html").ParseFiles("template.html"))
+var homeTemplate = template.Must(template.New("template.html").ParseFiles("./template.html"))
 
 func subscribe(w http.ResponseWriter, r *http.Request) {
 	c, err := upgrader.Upgrade(w, r, nil)
@@ -96,7 +96,6 @@ func main() {
 		if err != nil {
 			log.Printf("Error: %v", err)
 		} else {
-			//log.Printf("Data: %v", data)
 			if data != nil && lastData != nil {
 				wheelRevolutionTime, crankRevolutionTime, err := CalculateDifference(lastData, data)
 				if err != nil {

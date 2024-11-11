@@ -80,11 +80,6 @@ func CalculateDifference(lastSpeedCadenceData, currentSpeedCadenceData *SpeedCad
 	crankRevolutions := uint32(CalculateUint16Difference(lastSpeedCadenceData.CumulativeCrankRevolutions, currentSpeedCadenceData.CumulativeCrankRevolutions))
 	crankTimeDifference := float64(CalculateUint16Difference(lastSpeedCadenceData.LastCrankEventTime, currentSpeedCadenceData.LastCrankEventTime)) / 1024
 
-	//log.Printf("Wheel rotations: %v", wheelRevolutions)
-	//log.Printf("Wheel time difference: %v s", wheelTimeDifference)
-	//log.Printf("Crank rotations: %v", crankRevolutions)
-	//log.Printf("Crank time difference: %v s", crankTimeDifference)
-
 	wheelRevolutionTime := RevolutionTime{
 		Revolutions:    wheelRevolutions,
 		TimeDifference: wheelTimeDifference,
