@@ -105,11 +105,15 @@ func Sum(revolutionTimes []*RevolutionTime) (uint64, float64) {
 	return totalRevolutions, totalTimeDifference
 }
 
+func ConvertToDistanceInKm(revolutions uint64, distanceInMm float64) float64 {
+	return float64(revolutions) * (distanceInMm / 1_000_000)
+}
+
 func GetWheelKmH(revolutions uint64, timeDifferenceInS float64, distanceInMm float64) float64 {
 	if timeDifferenceInS == 0 {
 		return 0.0
 	}
-	return 3600 * (float64(revolutions) * (distanceInMm / 1_000_000)) / timeDifferenceInS
+	return 3600 * ConvertToDistanceInKm(revolutions, distanceInMm) / timeDifferenceInS
 }
 
 func GetCrankRpM(revolutions uint64, timeDifferenceInS float64) float64 {

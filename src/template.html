@@ -46,6 +46,8 @@
 		<section id="data" style="display: None;">
 			<span>Speed:</span><span class="right" id="speed">0.0 kmH</span>
 			<span>Cadence:</span><span class="right" id="cadence">0 RpM</span>
+			<span>Distance:</span><span class="right" id="distance">0.00 km</span>
+			<span>Duration:</span><span class="right" id="duration">0:00:00</span>
 		</section>
     </main>
 <script
@@ -107,9 +109,12 @@
 			}
 			ws.onmessage = (evt) => {
 				const data = JSON.parse(evt.data);
+				console.log(evt.data)
                 speedGauge.set(data.speed);
-				$("#speed").text(data.speed.toFixed(2) + " kmH");
+				$("#speed").text(data.speed.toFixed(1) + " kmH");
 				$("#cadence").text(data.cadence.toFixed(0) + " RpM");
+				$("#distance").text(data.distance.toFixed(2) + " km");
+				$("#duration").text(new Date(data.duration * 1000).toISOString().substring(11, 19));
 			}
 			ws.onerror = (evt) => {
 				console.log("Error: " + evt.data);
