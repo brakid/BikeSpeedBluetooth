@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <style>
+	body {
+		font-family: 'Courier New', Courier, monospace;
+		font-size: 1em;
+	}
     main {
         display: flex;
         flex-direction: column;
@@ -14,10 +18,19 @@
     main canvas {
         margin: 0;
     }
-    main p {
-        font-size: large;
+	main section {
+		width: 70%;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 5px;
+		justify-items: left;
+	}
+    main span {
         margin: 0;
-        padding: 10px;
+        padding: 0;
+	}
+	main span.right {
+		justify-self: right;
     }
     main button {
         width: 75%;
@@ -30,8 +43,10 @@
     <main>
         <canvas width="250px" height="150px" id="speedGauge"></canvas>
         <button id="start">Start</button>
-        <p style="display: None;" id="speed">Speed: 0.0 kmH</p>
-        <p style="display: None;" id="cadence">Cadence: 0 RpM</p>
+		<section id="data" style="display: None;">
+			<span>Speed:</span><span class="right" id="speed">0.0 kmH</span>
+			<span>Cadence:</span><span class="right" id="cadence">0 RpM</span>
+		</section>
     </main>
 <script
 	src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
@@ -81,8 +96,7 @@
 			}
 			$("#start").hide();
 			$("#speedGauge").show();
-            $("#speed").show();
-			$("#cadence").show();
+            $("#data").show();
 			ws = new WebSocket("{{.}}");
 			ws.onopen = (evt) => {
 				console.log("Open");
@@ -94,8 +108,8 @@
 			ws.onmessage = (evt) => {
 				const data = JSON.parse(evt.data);
                 speedGauge.set(data.speed);
-				$("#speed").text("Speed: " + data.speed.toFixed(2) + " kmH");
-				$("#cadence").text("Cadence: " + data.cadence.toFixed(0) + " RpM");
+				$("#speed").text(data.speed.toFixed(2) + " kmH");
+				$("#cadence").text(data.cadence.toFixed(0) + " RpM");
 			}
 			ws.onerror = (evt) => {
 				console.log("Error: " + evt.data);
