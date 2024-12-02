@@ -73,16 +73,23 @@ func ListenToSpeedAndCadenceSensor(adapter *bluetooth.Adapter, deviceName string
 					totalWheelRevolutions += uint64(wheelRevolutionTime.Revolutions)
 					totalDuration += wheelRevolutionTime.TimeDifference
 
-					log.Printf("Wheel: %v kmh", GetWheelKmH(wheelRevolutions, wheelTimeDifference, wheelCircumferenceInMm))
-					log.Printf("Crank: %v rpM", GetCrankRpM(crankRevolutions, crankTimeDifference))
-					log.Printf("Distance: %v km", ConvertToDistanceInKm(totalWheelRevolutions, wheelCircumferenceInMm))
+					wheelKmh := GetWheelKmH(wheelRevolutions, wheelTimeDifference, wheelCircumferenceInMm)
+					crankRpm := GetCrankRpM(crankRevolutions, crankTimeDifference)
+					power := GetPower(wheelKmh, crankRpm)
+					distance := ConvertToDistanceInKm(totalWheelRevolutions, wheelCircumferenceInMm)
+
+					log.Printf("Wheel: %v kmh", wheelKmh)
+					log.Printf("Crank: %v rpM", crankRpm)
+					log.Printf("Power: %v watts", power)
+					log.Printf("Distance: %v km", distance)
 					log.Printf("Duration: %v s", totalDuration)
 
 					subscribers.Send(
 						&Speedometer{
-							GetWheelKmH(wheelRevolutions, wheelTimeDifference, wheelCircumferenceInMm),
-							GetCrankRpM(crankRevolutions, crankTimeDifference),
-							ConvertToDistanceInKm(totalWheelRevolutions, wheelCircumferenceInMm),
+							wheelKmh,
+							crankRpm,
+							power,
+							distance,
 							totalDuration})
 				}
 			}

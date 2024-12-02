@@ -27,7 +27,7 @@ func (s *Subscriber) Send(data *Speedometer) error {
 		s.durationOffset = data.Duration
 		s.initialized = true
 	}
-	return s.conn.WriteJSON(&Speedometer{data.Speed, data.Cadence, data.Distance - s.distanceOffset, data.Duration - s.durationOffset})
+	return s.conn.WriteJSON(&Speedometer{data.Speed, data.Cadence, data.Power, data.Distance - s.distanceOffset, data.Duration - s.durationOffset})
 }
 
 type Subscribers struct {
