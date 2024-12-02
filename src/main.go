@@ -12,6 +12,8 @@ import (
 
 var adapter = bluetooth.DefaultAdapter
 var upgrader = websocket.Upgrader{}
+var trainer = Trainer{}
+var bikeSensor = BikeSensor{2135}
 var subscribers = CreateSubscribers()
 var wg = sync.WaitGroup{}
 var indexTemplate = template.Must(template.New("template.html").ParseFiles("./template.html"))
@@ -53,7 +55,7 @@ func main() {
 		}
 	}()
 
-	err := ListenToSpeedAndCadenceSensor(adapter, "R2Duo", 2135, subscribers)
+	err := ListenToSpeedAndCadenceSensor(adapter, "R2Duo", &bikeSensor, &trainer, subscribers)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}

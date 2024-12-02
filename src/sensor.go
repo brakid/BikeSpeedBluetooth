@@ -7,7 +7,7 @@ import (
 	"tinygo.org/x/bluetooth"
 )
 
-func ListenToSpeedAndCadenceSensor(adapter *bluetooth.Adapter, deviceName string, wheelCircumferenceInMm float64, subscribers *Subscribers) error {
+func ListenToSpeedAndCadenceSensor(adapter *bluetooth.Adapter, deviceName string, bikeSensor *BikeSensor, trainer *Trainer, subscribers *Subscribers) error {
 	if adapter == nil || subscribers == nil {
 		return fmt.Errorf("nil adapter or subscribers")
 	}
@@ -73,10 +73,10 @@ func ListenToSpeedAndCadenceSensor(adapter *bluetooth.Adapter, deviceName string
 					totalWheelRevolutions += uint64(wheelRevolutionTime.Revolutions)
 					totalDuration += wheelRevolutionTime.TimeDifference
 
-					wheelKmh := GetWheelKmH(wheelRevolutions, wheelTimeDifference, wheelCircumferenceInMm)
-					crankRpm := GetCrankRpM(crankRevolutions, crankTimeDifference)
-					power := GetPower(wheelKmh, crankRpm)
-					distance := ConvertToDistanceInKm(totalWheelRevolutions, wheelCircumferenceInMm)
+					wheelKmh := bikeSensor.CalculateWheelKmH(wheelRevolutions, wheelTimeDifference)
+					crankRpm := CalculateCrankRpM(crankRevolutions, crankTimeDifference)
+					power := trainer.CalculatePower(wheelKmh, crankRpm)
+					distance := bikeSensor.CalculateDistanceKmH(totalWheelRevolutions)
 
 					log.Printf("Wheel: %v kmh", wheelKmh)
 					log.Printf("Crank: %v rpM", crankRpm)

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 type SpeedCadenceData struct {
@@ -106,34 +105,9 @@ func Sum(revolutionTimes []*RevolutionTime) (uint64, float64) {
 	return totalRevolutions, totalTimeDifference
 }
 
-func ConvertToDistanceInKm(revolutions uint64, distanceInMm float64) float64 {
-	return float64(revolutions) * (distanceInMm / 1_000_000)
-}
-
-func GetWheelKmH(revolutions uint64, timeDifferenceInS float64, distanceInMm float64) float64 {
-	if timeDifferenceInS == 0 {
-		return 0.0
-	}
-	return 3600 * ConvertToDistanceInKm(revolutions, distanceInMm) / timeDifferenceInS
-}
-
-func GetCrankRpM(revolutions uint64, timeDifferenceInS float64) float64 {
+func CalculateCrankRpM(revolutions uint64, timeDifferenceInS float64) float64 {
 	if timeDifferenceInS == 0 {
 		return 0.0
 	}
 	return 60 * (float64(revolutions)) / (timeDifferenceInS)
-}
-
-func GetPower(speedKmh float64, cadenceRpm float64) float64 {
-	if cadenceRpm == 0 {
-		return 0.0
-	}
-
-	power := 0.03613*math.Pow(speedKmh, 2) + 5.021*speedKmh + 1.504
-
-	if power < 0 {
-		return 0.0
-	}
-
-	return power
 }
