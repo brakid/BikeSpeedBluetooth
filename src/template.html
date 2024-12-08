@@ -50,6 +50,8 @@
 			<span>Distance:</span><span class="right" id="distance">0.00 km</span>
 			<span>Duration:</span><span class="right" id="duration">0:00:00</span>
 		</section>
+		<button id="stop" style="display: None;">Stop</button>
+		<button id="download" style="display: None;">Download</button>
     </main>
 <script
 	src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
@@ -60,6 +62,8 @@
 <script>
 	$(document).ready(() => {
 		let ws;
+		const id = self.crypto.randomUUID();
+		console.log("ID " + id);
 
 		const opts = {
 			angle: -0.2,
@@ -100,9 +104,11 @@
 			$("#start").hide();
 			$("#speedGauge").show();
             $("#data").show();
-			ws = new WebSocket("{{.}}");
+			$("#stop").show();
+			ws = new WebSocket("ws://{{.}}/subscribe");
 			ws.onopen = (evt) => {
 				console.log("Open");
+				ws.send(JSON.stringify({ "id": id }));
 			}
 			ws.onclose = (evt) => {
 				console.log("Close");
@@ -119,8 +125,19 @@
 				$("#duration").text(new Date(data.duration * 1000).toISOString().substring(11, 19));
 			}
 			ws.onerror = (evt) => {
-				console.log("Error: " + evt.data);
+				console.log("Error: " + evt);
 			}
+		});
+
+		$("#stop").click(() => {
+			ws.close();
+			console.log(ws);
+			$("#stop").hide();
+			$("#download").show();
+		});
+
+		$("#download").click(() => {
+			window.open(`http://{{ . }}/tracks?trackId=${id}`);
 		});
     });
 </script>

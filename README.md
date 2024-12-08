@@ -36,11 +36,19 @@ The power output estimation is needed to be able to allow the users to track the
 |   45            |   311             |
 |   48            |   338             |
 
+## Training Export
+To be able to track your training on platformas such as [Strava](https://www.strava.com), the app allows to download the training session as a [TCX](https://en.wikipedia.org/wiki/Training_Center_XML) file containing the individual sensor data points to track speed, duration and cadence along the training session.
+
+Strava is able to parse the TCX file correctly and displays all data measured by the app.
+
+![Strava](./resources/strava.png)
+
 ## Resources
 * [Speed and Cadence Data Definition](https://github.com/sputnikdev/bluetooth-gatt-parser/blob/master/src/main/resources/gatt/characteristic/org.bluetooth.characteristic.csc_measurement.xml)
 * [Gauge JS Component](https://bernii.github.io/gauge.js/#!)
 * [Websockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
 ## Possible Extensions
-* allow exporting a training session
+* confirm the power calculation is correct
+validate that there are no cumulative errors (e.g on the running sum fir the distance) that can disturb the tracked data
 * allow changing the difficulty level on the trainer

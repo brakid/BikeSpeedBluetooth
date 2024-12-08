@@ -4,21 +4,7 @@ import (
 	"fmt"
 )
 
-type SpeedCadenceData struct {
-	WheelRevolutionsPresent    bool
-	CrankRevolutionsPresent    bool
-	CumulativeWheelRevolutions uint32
-	CumulativeCrankRevolutions uint16
-	LastWheelEventTime         uint16
-	LastCrankEventTime         uint16
-}
-
-type RevolutionTime struct {
-	Revolutions    uint32
-	TimeDifference float64
-}
-
-func ParseData(data []byte) (*SpeedCadenceData, error) {
+func ParseSensorData(data []byte) (*SpeedCadenceData, error) {
 	if len(data) != 11 {
 		return nil, fmt.Errorf("expected data to contain 11 bytes")
 	}
@@ -91,7 +77,7 @@ func CalculateDifference(lastSpeedCadenceData, currentSpeedCadenceData *SpeedCad
 	return &wheelRevolutionTime, &crankRevolutionTime, nil
 }
 
-func Sum(revolutionTimes []*RevolutionTime) (uint64, float64) {
+func SumRevolutions(revolutionTimes []*RevolutionTime) (uint64, float64) {
 	totalRevolutions := uint64(0)
 	totalTimeDifference := float64(0)
 	for _, revolutionTime := range revolutionTimes {
