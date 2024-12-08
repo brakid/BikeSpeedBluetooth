@@ -19,7 +19,7 @@
         margin: 0;
     }
 	main section {
-		width: 70%;
+		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 5px;
@@ -46,7 +46,7 @@
 		<section id="data" style="display: None;">
 			<span>Speed:</span><span class="right" id="speed">0.0 kmH</span>
 			<span>Cadence:</span><span class="right" id="cadence">0 RpM</span>
-			<span>Power:</span><span class="right" id="power">0 watts</span>
+			<span>Power:</span><span class="right" id="power">0 W</span>
 			<span>Distance:</span><span class="right" id="distance">0.00 km</span>
 			<span>Duration:</span><span class="right" id="duration">0:00:00</span>
 		</section>
@@ -120,7 +120,7 @@
                 speedGauge.set(data.speed);
 				$("#speed").text(data.speed.toFixed(1) + " kmH");
 				$("#cadence").text(data.cadence.toFixed(0) + " RpM");
-				$("#power").text(data.power.toFixed(0) + " watts");
+				$("#power").text(data.power.toFixed(0) + " W");
 				$("#distance").text(data.distance.toFixed(2) + " km");
 				$("#duration").text(new Date(data.duration * 1000).toISOString().substring(11, 19));
 			}
